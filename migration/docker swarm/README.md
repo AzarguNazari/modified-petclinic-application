@@ -15,4 +15,5 @@ sh ./cluster-installation/installation.sh
 sh ./deploy.sh
 ```
 
-**Note**: We used Portainer as management tool for docker swarm.   
+**Note**: We used Portainer as management tool for docker swarm.
+![Docker Swarm Portainer](https://github.com/AzarguNazari/modifed-petclinic-application/blob/master/media/docker-swarm-portainer.png?raw=true)
