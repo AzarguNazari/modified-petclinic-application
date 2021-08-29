@@ -71,7 +71,7 @@ services:
       CUSTOMER_SERVICE: customers-service
       SPRING_ZIPKIN_BASEURL: http://tracing-server:9411/
     ports:
-    - 80:8080
+    - "8080:8080"
 
   tracing-server:
     image: openzipkin/zipkin
@@ -80,38 +80,31 @@ services:
     environment:
     - JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -Djava.security.egd=file:/dev/./urandom
     ports:
-     - 9411:9411
+     - "9411:9411"
 
   admin-server:
     image: nazariazargul/petclinic-admin-server:4.0
     container_name: admin-server
     restart: always
     ports:
-     - 9091:9090
+     - "9091:9090"
     environment:
       CONFIG_SERVER: config-server
-  ## Grafana / Prometheus
 
+  ## Grafana / Prometheus
   grafana-server:
     image: nazariazargul/grafana-server
     container_name: grafana-server
     restart: always
     ports:
-    - 3000:3000
+    - "3000:3000"
 
   prometheus-server:
     image: nazariazargul/prometheus-server
     container_name: prometheus-server
     restart: always
     ports:
-    - 9090:9090
-
-#  nginx-server:
-#    image: nginx-server
-#    container_name: nginx-server
-#    restart: always
-#    ports:
-#      - 80:80
+    - "9090:9090"
 
   mysql:
     image: mysql:5.7.32
@@ -119,8 +112,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: petclinic
       MYSQL_DATABASE: petclinic
-#    ports:
-#      - 3306:3306
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -132,6 +123,6 @@ services:
     depends_on:
       - mysql
     ports:
-      - 9094:80
+      - "9094:80"
 
 
