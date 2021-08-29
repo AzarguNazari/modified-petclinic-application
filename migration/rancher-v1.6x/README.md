@@ -11,10 +11,9 @@ Run the Rancher v1.6x server on Server node:
 docker run -d -p 8080:8080 --privileged rancher/server
 ```
 
-## How to run?
-```shell
-sh ./deploy.sh
-```
-
-**Note**: We used Portainer as management tool for docker swarm.
-![Docker Swarm Portainer](https://github.com/AzarguNazari/modifed-petclinic-application/blob/master/media/docker-swarm-portainer.png?raw=true)
+- The Rancher server will be available under port 8080. To add host, you can go to the INFRASTRUCTURE > HOSTS and click the `Add Host` button
+![Add host](https://github.com/AzarguNazari/modifed-petclinic-application/blob/master/media/add-post.png?raw=true)
+- After clicking the `Add Host`, new page comes to verify the server host address which looks as following image:
+![verify server host](https://github.com/AzarguNazari/modifed-petclinic-application/blob/master/media/add-post-url.png?raw=true)
+- Then copy the generated command and past it to the Rancher clients.
+![generated command](https://github.com/AzarguNazari/modifed-petclinic-application/blob/master/media/copy-command.png?raw=true)
