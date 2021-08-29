@@ -17,7 +17,7 @@ playground-hazar-1   Ready    control-plane,master   5m30s   v1.21.3+k3s1
 playground-hazar-2   Ready    <none>                 89s     v1.21.3+k3s1
 playground-hazar-3   Ready    <none>                 87s     v1.21.3+k3s1
 ```
-
+![K3s-portainer](https://github.com/AzarguNazari/modifed-petclinic-application/blob/master/media/k3s-portainer.png)
 
 ## To install docker swarm cluster:
 We used a 3-node cluster using Hetnzer [CX41](https://www.hetzner.com/cloud)
