@@ -17,3 +17,10 @@ docker run -d -p 8080:8080 --privileged rancher/server
 ![verify server host](https://github.com/AzarguNazari/modifed-petclinic-application/blob/master/media/add-post-url.png?raw=true)
 - Then copy the generated command and past it to the Rancher clients.
 ![generated command](https://github.com/AzarguNazari/modifed-petclinic-application/blob/master/media/copy-command.png?raw=true)
+- Now the cluster is ready:
+![Ready Cluster](https://github.com/AzarguNazari/modifed-petclinic-application/blob/master/media/added-hosts.png?raw=true)
+
+# Run the following command to deploy Petclinic application on Rancher remotely?
+```shell
+sh ./deploy.sh
+```
