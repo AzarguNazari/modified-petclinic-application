@@ -12,6 +12,10 @@ services:
 
   mysql:
     image: mysql:5.7.32
+    volumes:
+      - type: volume
+        source: mysql-data
+        target: /var/lib/mysql
     deploy:
       <<: *default-health-check
       replicas: 1
@@ -22,8 +26,7 @@ services:
       MYSQL_ROOT_PASSWORD: petclinic
       MYSQL_DATABASE: petclinic
     networks:
-      - database
-      - globalnetwork
+      - global
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -40,11 +43,11 @@ services:
     ports:
       - "9094:80"
     networks:
-      - database
-      - globalnetwork
+      - global
 
 networks:
-  globalnetwork:
+  global:
     external: true
-  database:
-    external: true
+
+volumes:
+  mysql-data:

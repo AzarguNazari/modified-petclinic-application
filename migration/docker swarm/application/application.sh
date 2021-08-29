@@ -1,6 +1,5 @@
 #!/bin/bash
 
-docker network create -d overlay application
-
+# Deploy application stack
 docker stack deploy --resolve-image always -c docker-compose.yml applications --with-registry-auth --prune
 

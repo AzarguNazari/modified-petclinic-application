@@ -18,8 +18,7 @@ services:
         constraints:
           - node.labels.application == true
     networks:
-      - application
-      - globalnetwork
+      - global
     environment:
       SPRING_BOOT_ADMIN: admin-server
 
@@ -39,9 +38,7 @@ services:
         constraints:
           - node.labels.application == true
     networks:
-      - application
-      - globalnetwork
-      - database
+      - global
 
   visits-service:
     image: nazariazargul/petclinic-visits-service:4.0
@@ -57,9 +54,7 @@ services:
         constraints:
           - node.labels.application == true
     networks:
-      - application
-      - globalnetwork
-      - database
+      - global
 
   vets-service:
     image: nazariazargul/petclinic-vets-service:4.0
@@ -75,9 +70,7 @@ services:
         constraints:
           - node.labels.application == true
     networks:
-      - application
-      - globalnetwork
-      - database
+      - global
 
   api-gateway:
     image: nazariazargul/petclinic-api-gateway:4.0
@@ -96,8 +89,7 @@ services:
       CUSTOMER_SERVICE: customers-service
       spring.zipkin.baseUrl: http://tracing-server:9411/
     networks:
-      - application
-      - globalnetwork
+      - global
 
   tracing-server:
     image: openzipkin/zipkin
@@ -108,8 +100,7 @@ services:
         constraints:
           - node.labels.monitoring == true
     networks:
-      - application
-      - globalnetwork
+      - global
     ports:
       - "9411:9411"
     environment:
@@ -126,8 +117,7 @@ services:
     depends_on:
       - config-server
     networks:
-      - application
-      - globalnetwork
+      - global
     ports:
       - "9091:9090"
 
@@ -142,8 +132,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
-      - application
-      - globalnetwork
+      - global
     ports:
       - "3000:3000"
 
@@ -159,15 +148,10 @@ services:
         limits:
           memory: 256M
     networks:
-      - application
-      - globalnetwork
+      - global
     ports:
       - "9090:9090"
 
 networks:
-  globalnetwork:
-    external: true
-  database:
-    external: true
-  application:
+  global:
     external: true

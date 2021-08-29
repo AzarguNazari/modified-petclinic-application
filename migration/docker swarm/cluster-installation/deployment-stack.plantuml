@@ -1,0 +1,9 @@
+@startuml
+node local
+node dev_node1
+node dev_node2
+node dev_node3
+local -- dev_node1 : run script
+local -- dev_node2 : run script
+local -- dev_node3 : run script
+@enduml
