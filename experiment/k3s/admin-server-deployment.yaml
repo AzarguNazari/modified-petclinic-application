@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin-server
+  labels:
+    app: admin-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: admin-server
+  template:
+    metadata:
+      labels:
+        app: admin-server
+    spec:
+      containers:
+        - name: admin-server
+          image: nazariazargul/petclinic-admin-server:4.0
+          ports:
+            - containerPort: 9091
+          env:
+            - name: CONFIG_SERVER
+              value: config-server
+            - name: sever.port
+              value: "9091"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: admin-server
+spec:
+  selector:
+    app: admin-server
+  ports:
+    - protocol: TCP
+      port: 9091
+      targetPort: 9091
+#      nodePort: 30000

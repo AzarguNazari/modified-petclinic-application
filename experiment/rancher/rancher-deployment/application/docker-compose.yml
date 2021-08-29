@@ -1,0 +1,159 @@
+version: '2'
+
+services:
+  config-server:
+    image: nazariazargul/petclinic-config-server:4.0
+    stdin_open: true
+    tty: true
+    links:
+      - admin-server
+    environment:
+      spring.boot.admin.client.url: http://admin-server:9090/spring-boot-admin
+    labels:
+      io.rancher.scheduler.affinity:host_label: application=true
+      io.rancher.container.hostname_override: container_name
+    mem_limit: 800m
+
+
+  customers-service:
+    image: nazariazargul/petclinic-customers-service:4.0
+    stdin_open: true
+    tty: true
+    links:
+      - config-server
+      - tracing-server
+      - grafana-server
+      - admin-server
+    external_links:
+      - database/mysql:mysql
+    environment:
+      MYSQL_HOST: mysql
+      spring.boot.admin.client.url: http://admin-server:9090/spring-boot-admin
+      CONFIG_SERVER: config-server
+      spring.zipkin.baseUrl: http://tracing-server:9411/
+    labels:
+      io.rancher.scheduler.affinity:host_label: application=true
+      io.rancher.container.hostname_override: container_name
+    mem_limit: 800m
+
+
+  visits-service:
+    image: nazariazargul/petclinic-visits-service:4.0
+    stdin_open: true
+    tty: true
+    links:
+      - config-server
+      - tracing-server
+      - grafana-server
+      - admin-server
+    external_links:
+      - database/mysql:mysql
+    environment:
+      spring.boot.admin.client.url: http://admin-server:9090/spring-boot-admin
+      CONFIG_SERVER: config-server
+      MYSQL_HOST: mysql
+      spring.zipkin.baseUrl: http://tracing-server:9411/
+    labels:
+      io.rancher.scheduler.affinity:host_label: application=true
+      io.rancher.container.hostname_override: container_name
+    mem_limit: 800m
+
+
+  vets-service:
+    image: nazariazargul/petclinic-vets-service:4.0
+    container_name: vets-service
+    stdin_open: true
+    tty: true
+    links:
+      - config-server
+      - tracing-server
+      - grafana-server
+      - admin-server
+    external_links:
+      - database/mysql:mysql
+    environment:
+      spring.boot.admin.client.url: http://admin-server:9090/spring-boot-admin
+      CONFIG_SERVER: config-server
+      MYSQL_HOST: mysql
+      spring.zipkin.baseUrl: http://tracing-server:9411/
+    labels:
+      io.rancher.scheduler.affinity:host_label: application=true
+      io.rancher.container.hostname_override: container_name
+    mem_limit: 800m
+
+  api-gateway:
+    image: nazariazargul/petclinic-api-gateway:4.0
+    stdin_open: true
+    tty: true
+    ports:
+      - "8080:8080/tcp"
+    links:
+      - config-server
+      - tracing-server
+      - grafana-server
+      - admin-server
+    external_links:
+      - database/mysql:mysql
+    environment:
+      spring.boot.admin.client.url: http://admin-server:9090/spring-boot-admin
+      CONFIG_SERVER: config-server
+      VETS_SERVICE: vets-service
+      VISITS_SERVICE: visits-service
+      CUSTOMER_SERVICE: customers-service
+      spring.zipkin.baseUrl: http://tracing-server:9411/
+    labels:
+      io.rancher.scheduler.affinity:host_label: application=true
+      io.rancher.container.hostname_override: container_name
+    mem_limit: 800m
+
+  tracing-server:
+    image: openzipkin/zipkin
+    stdin_open: true
+    tty: true
+    ports:
+      - "9411:9411/tcp"
+    environment:
+      - JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -Djava.security.egd=file:/dev/./urandom
+    labels:
+      io.rancher.scheduler.affinity:host_label: monitoring=true
+      io.rancher.container.hostname_override: container_name
+    mem_limit: 400m
+
+  admin-server:
+    image: nazariazargul/petclinic-admin-server:4.0
+    stdin_open: true
+    tty: true
+    ports:
+      - "9091:9090/tcp"
+    links:
+      - config-server
+    environment:
+      CONFIG_SERVER: config-server
+    labels:
+      io.rancher.scheduler.affinity:host_label: monitoring=true
+      io.rancher.container.hostname_override: container_name
+    mem_limit: 800m
+
+  grafana-server:
+    image: nazariazargul/grafana-server
+    stdin_open: true
+    tty: true
+    ports:
+      - "3000:3000/tcp"
+    container_name: grafana-server
+    labels:
+      io.rancher.scheduler.affinity:host_label: monitoring=true
+      io.rancher.container.hostname_override: container_name
+    mem_limit: 400m
+
+  prometheus-server:
+    image: nazariazargul/prometheus-server
+    stdin_open: true
+    tty: true
+    ports:
+      - "9090:9090/tcp"
+    container_name: prometheus-server
+    labels:
+      io.rancher.scheduler.affinity:host_label: monitoring=true
+      io.rancher.container.hostname_override: container_name
+    mem_limit: 800m

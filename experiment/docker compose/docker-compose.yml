@@ -1,0 +1,137 @@
+version: '3.7'
+
+services:
+  config-server:
+    image: nazariazargul/petclinic-config-server:4.0
+    container_name: config-server
+    restart: always
+    depends_on:
+      - admin-server
+    environment:
+      SPRING_BOOT_ADMIN: admin-server
+
+  customers-service:
+    image: nazariazargul/petclinic-customers-service:4.0
+    container_name: customers-service
+    depends_on:
+      - config-server
+      - mysql
+      - tracing-server
+      - grafana-server
+    environment:
+      SPRING_BOOT_ADMIN: admin-server
+      CONFIG_SERVER: config-server
+      MYSQL_HOST: mysql
+      SPRING_ZIPKIN_BASEURL: http://tracing-server:9411/
+
+  visits-service:
+    image: nazariazargul/petclinic-visits-service:4.0
+    container_name: visits-service
+    restart: always
+    depends_on:
+     - config-server
+     - mysql
+     - tracing-server
+     - grafana-server
+    environment:
+      SPRING_BOOT_ADMIN: admin-server
+      CONFIG_SERVER: config-server
+      MYSQL_HOST: mysql
+      SPRING_ZIPKIN_BASEURL: http://tracing-server:9411/
+
+  vets-service:
+    image: nazariazargul/petclinic-vets-service:4.0
+    container_name: vets-service
+    restart: always
+    depends_on:
+     - config-server
+     - mysql
+     - grafana-server
+     - tracing-server
+    environment:
+      SPRING_BOOT_ADMIN: admin-server
+      CONFIG_SERVER: config-server
+      MYSQL_HOST: mysql
+      SPRING_ZIPKIN_BASEURL: http://tracing-server:9411/
+
+  api-gateway:
+    image: nazariazargul/petclinic-api-gateway:4.0
+    container_name: api-gateway
+    restart: always
+    depends_on:
+     - config-server
+     - tracing-server
+     - grafana-server
+     - mysql
+    environment:
+      SPRING_BOOT_ADMIN: admin-server
+      CONFIG_SERVER: config-server
+      VETS_SERVICE: vets-service
+      VISITS_SERVICE: visits-service
+      CUSTOMER_SERVICE: customers-service
+      SPRING_ZIPKIN_BASEURL: http://tracing-server:9411/
+    ports:
+    - 80:8080
+
+  tracing-server:
+    image: openzipkin/zipkin
+    container_name: tracing-server
+    restart: always
+    environment:
+    - JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -Djava.security.egd=file:/dev/./urandom
+    ports:
+     - 9411:9411
+
+  admin-server:
+    image: nazariazargul/petclinic-admin-server:4.0
+    container_name: admin-server
+    restart: always
+    ports:
+     - 9091:9090
+    environment:
+      CONFIG_SERVER: config-server
+  ## Grafana / Prometheus
+
+  grafana-server:
+    image: nazariazargul/grafana-server
+    container_name: grafana-server
+    restart: always
+    ports:
+    - 3000:3000
+
+  prometheus-server:
+    image: nazariazargul/prometheus-server
+    container_name: prometheus-server
+    restart: always
+    ports:
+    - 9090:9090
+
+#  nginx-server:
+#    image: nginx-server
+#    container_name: nginx-server
+#    restart: always
+#    ports:
+#      - 80:80
+
+  mysql:
+    image: mysql:5.7.32
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: petclinic
+      MYSQL_DATABASE: petclinic
+#    ports:
+#      - 3306:3306
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: localhost
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    depends_on:
+      - mysql
+    ports:
+      - 9094:80
+
+

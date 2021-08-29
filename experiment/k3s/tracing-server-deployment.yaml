@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tracing-server
+  labels:
+    app: tracing-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tracing-server
+  template:
+    metadata:
+      labels:
+        app: tracing-server
+    spec:
+      containers:
+        - name: tracing-server
+          image: openzipkin/zipkin
+          ports:
+            - containerPort: 80
+          env:
+            - name: JAVA_OPTS
+              value: -XX:+UnlockExperimentalVMOptions -Djava.security.egd=file:/dev/./urandom
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tracing-server
+spec:
+  selector:
+    app: racing-server
+  ports:
+    - protocol: TCP
+      port: 9411
+      targetPort: 9411
+#      nodePort: 30008

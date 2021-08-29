@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: visits-service
+  labels:
+    app: visits-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: visits-service
+  template:
+    metadata:
+      labels:
+        app: visits-service
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: visits-service
+          image: nazariazargul/petclinic-visits-service:4.0
+          ports:
+            - containerPort: 8082
+          env:
+            - name: CONFIG_SERVER
+              value: config-server
+            - name: MYSQL_HOST
+              value: mysql
+            - name: spring.boot.admin.client.url
+              value: admin-server:9091/spring-boot-admin
+            - name: SPRING_ZIPKIN_BASEURL
+              value: http://tracing-server:9411/
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: visits-service
+spec:
+  selector:
+    app: visits-service
+  ports:
+    - protocol: TCP
+      port: 8082
+      targetPort: 8082
+
+

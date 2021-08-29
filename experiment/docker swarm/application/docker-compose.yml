@@ -1,0 +1,173 @@
+version: '3.7'
+
+x-default-opts:
+  &default-health-check
+  restart_policy:
+    condition: on-failure
+    delay: 5s
+    max_attempts: 3
+    window: 120s
+
+services:
+  config-server:
+    image: nazariazargul/petclinic-config-server:4.0
+    deploy:
+      <<: *default-health-check
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.application == true
+    networks:
+      - application
+      - globalnetwork
+    environment:
+      SPRING_BOOT_ADMIN: admin-server
+
+  customers-service:
+    image: nazariazargul/petclinic-customers-service:4.0
+    depends_on:
+      - config-server
+    environment:
+      SPRING_BOOT_ADMIN: admin-server
+      CONFIG_SERVER: config-server
+      MYSQL_HOST: mysql
+      spring.zipkin.baseUrl: http://tracing-server:9411/
+    deploy:
+      <<: *default-health-check
+      replicas: 6
+      placement:
+        constraints:
+          - node.labels.application == true
+    networks:
+      - application
+      - globalnetwork
+      - database
+
+  visits-service:
+    image: nazariazargul/petclinic-visits-service:4.0
+    environment:
+      SPRING_BOOT_ADMIN: admin-server
+      CONFIG_SERVER: config-server
+      MYSQL_HOST: mysql
+      spring.zipkin.baseUrl: http://tracing-server:9411/
+    deploy:
+      <<: *default-health-check
+      replicas: 6
+      placement:
+        constraints:
+          - node.labels.application == true
+    networks:
+      - application
+      - globalnetwork
+      - database
+
+  vets-service:
+    image: nazariazargul/petclinic-vets-service:4.0
+    environment:
+      SPRING_BOOT_ADMIN: admin-server
+      CONFIG_SERVER: config-server
+      MYSQL_HOST: mysql
+      spring.zipkin.baseUrl: http://tracing-server:9411/
+    deploy:
+      <<: *default-health-check
+      replicas: 6
+      placement:
+        constraints:
+          - node.labels.application == true
+    networks:
+      - application
+      - globalnetwork
+      - database
+
+  api-gateway:
+    image: nazariazargul/petclinic-api-gateway:4.0
+    deploy:
+      <<: *default-health-check
+      mode: global
+    depends_on:
+      - config-server
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_BOOT_ADMIN: admin-server
+      CONFIG_SERVER: config-server
+      VETS_SERVICE: vets-service
+      VISITS_SERVICE: visits-service
+      CUSTOMER_SERVICE: customers-service
+      spring.zipkin.baseUrl: http://tracing-server:9411/
+    networks:
+      - application
+      - globalnetwork
+
+  tracing-server:
+    image: openzipkin/zipkin
+    deploy:
+      <<: *default-health-check
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.monitoring == true
+    networks:
+      - application
+      - globalnetwork
+    ports:
+      - "9411:9411"
+    environment:
+      - JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -Djava.security.egd=file:/dev/./urandom
+
+  admin-server:
+    image: nazariazargul/petclinic-admin-server:4.0
+    deploy:
+      <<: *default-health-check
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.monitoring == true
+    depends_on:
+      - config-server
+    networks:
+      - application
+      - globalnetwork
+    ports:
+      - "9091:9090"
+
+  grafana-server:
+    image: nazariazargul/grafana-server
+    deploy:
+      <<: *default-health-check
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.monitoring == true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - application
+      - globalnetwork
+    ports:
+      - "3000:3000"
+
+  prometheus-server:
+    image: nazariazargul/prometheus-server
+    deploy:
+      <<: *default-health-check
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.monitoring == true
+      resources:
+        limits:
+          memory: 256M
+    networks:
+      - application
+      - globalnetwork
+    ports:
+      - "9090:9090"
+
+networks:
+  globalnetwork:
+    external: true
+  database:
+    external: true
+  application:
+    external: true

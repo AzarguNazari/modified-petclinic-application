@@ -1,0 +1,34 @@
+version: '2'
+services:
+  mysql:
+    image: mysql:5.7.32
+    environment:
+      MYSQL_ROOT_PASSWORD: petclinic
+      MYSQL_DATABASE: petclinic
+    stdin_open: true
+    volumes:
+      - /home/fadmin/mysql/data:/var/lib/postgresql/data/
+      - /etc/localtime:/etc/localtime:ro
+      - /home/fadmin/mysql/backup/:/var/lib/postgresql/backup/
+    tty: true
+    labels:
+      io.rancher.scheduler.affinity:host_label: application=true
+      io.rancher.container.hostname_override: container_name
+    mem_limit: 600m
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: localhost
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    stdin_open: true
+    tty: true
+    ports:
+      - "9094:80/tcp"
+    links:
+      - mysql
+    labels:
+      io.rancher.scheduler.affinity:host_label: application=true
+      io.rancher.container.hostname_override: container_name
+    mem_limit: 400m
