@@ -7,14 +7,12 @@ services:
       MYSQL_DATABASE: petclinic
     stdin_open: true
     volumes:
-      - /home/fadmin/mysql/data:/var/lib/postgresql/data/
       - /etc/localtime:/etc/localtime:ro
-      - /home/fadmin/mysql/backup/:/var/lib/postgresql/backup/
+      - /home/fadmin/mysql:/var/lib/postgresql/backup/
     tty: true
     labels:
       io.rancher.scheduler.affinity:host_label: application=true
       io.rancher.container.hostname_override: container_name
-    mem_limit: 600m
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -29,6 +27,5 @@ services:
     links:
       - mysql
     labels:
-      io.rancher.scheduler.affinity:host_label: application=true
+      io.rancher.scheduler.affinity:host_label: monitoring=true
       io.rancher.container.hostname_override: container_name
-    mem_limit: 400m

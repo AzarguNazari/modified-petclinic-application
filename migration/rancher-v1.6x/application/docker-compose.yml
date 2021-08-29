@@ -12,7 +12,6 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label: application=true
       io.rancher.container.hostname_override: container_name
-    mem_limit: 800m
 
 
   customers-service:
@@ -34,8 +33,6 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label: application=true
       io.rancher.container.hostname_override: container_name
-    mem_limit: 800m
-
 
   visits-service:
     image: nazariazargul/petclinic-visits-service:4.0
@@ -56,8 +53,6 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label: application=true
       io.rancher.container.hostname_override: container_name
-    mem_limit: 800m
-
 
   vets-service:
     image: nazariazargul/petclinic-vets-service:4.0
@@ -79,7 +74,6 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label: application=true
       io.rancher.container.hostname_override: container_name
-    mem_limit: 800m
 
   api-gateway:
     image: nazariazargul/petclinic-api-gateway:4.0
@@ -104,7 +98,6 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label: application=true
       io.rancher.container.hostname_override: container_name
-    mem_limit: 800m
 
   tracing-server:
     image: openzipkin/zipkin
@@ -132,7 +125,6 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label: monitoring=true
       io.rancher.container.hostname_override: container_name
-    mem_limit: 800m
 
   grafana-server:
     image: nazariazargul/grafana-server
@@ -144,7 +136,6 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label: monitoring=true
       io.rancher.container.hostname_override: container_name
-    mem_limit: 400m
 
   prometheus-server:
     image: nazariazargul/prometheus-server
@@ -156,4 +147,3 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label: monitoring=true
       io.rancher.container.hostname_override: container_name
-    mem_limit: 800m
