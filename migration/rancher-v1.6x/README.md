@@ -35,4 +35,4 @@ sh ./deploy.sh
 ```
 
 - After the successful deployment, the Rancher cluster shows its ready state:
-![]()
+![Ready Rancher](https://github.com/AzarguNazari/modifed-petclinic-application/blob/master/media/ready-rancher.png?raw=true)
