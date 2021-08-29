@@ -20,7 +20,19 @@ docker run -d -p 8080:8080 --privileged rancher/server
 - Now the cluster is ready:
 ![Ready Cluster](https://github.com/AzarguNazari/modifed-petclinic-application/blob/master/media/added-hosts.png?raw=true)
 
+Additional steps:
+- Generate a API key to access rancher cluster remotely: API > Keys > Add Account Api Key > create new account > copy the generated TOKENS
+- Past the generated token and rancher URL to: 
+```shell
+export RANCHER_URL='http://playground-hazar-1.fvndo.net:8080/v1/projects/1a5'
+export RANCHER_ACCESS_KEY='DD8012BE1F616CC72150'
+export RANCHER_SECRET_KEY='JEoW3sg7hed8fBx59Aiir7np7jNY8KBuT1s675rB'
+```
+
 # Run the following command to deploy Petclinic application on Rancher remotely?
 ```shell
 sh ./deploy.sh
 ```
+
+- After the successful deployment, the Rancher cluster shows its ready state:
+![]()
