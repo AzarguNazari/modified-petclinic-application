@@ -1,10 +1,7 @@
-# Distributed version of the Spring PetClinic Sample Application built with Spring Cloud 
-
-This microservices branch was initially derived from [AngularJS version](https://github.com/spring-petclinic/spring-petclinic-angular1) to demonstrate how to split sample Spring application into [microservices](http://www.martinfowler.com/articles/microservices.html).
-To achieve that goal we use Spring Cloud Gateway, Spring Cloud Circuit Breaker, Spring Cloud Config, Spring Cloud Sleuth, Resilience4j, and Micrometer.
+# Modified version of the [Spring PetClinic Microservice Application](https://github.com/spring-petclinic/spring-petclinic-microservices) built with Spring Cloud
 
 ## Starting services locally without Docker
-For the local development, you can run the `docker-compose-database.yml` which is a mysql database that is used by several services.
+For the local development, you can run the `docker-compose-mysql.yml` which is a mysql database that is used by several services.
 Every microservice is a Spring Boot application and can be started locally using IDE ([Lombok](https://projectlombok.org/) plugin has to be set up) or `../mvnw spring-boot:run` command. Please note that supporting services (Config and Discovery Server) must be started before any other application (Customers, Vets, Visits and API).
 Startup of Tracing server, Admin server, Grafana and Prometheus is optional.
 If everything goes well, you can access the following services at given location:
@@ -25,25 +22,16 @@ In order to start entire infrastructure using Docker, you have to build images b
 from a project root. Once images are ready, you can start them with a single command
 `docker-compose up`. Containers startup order is coordinated with [`dockerize` script](https://github.com/jwilder/dockerize). 
 After starting services it takes a while for API Gateway to be in sync with service registry,
-so don't be scared of initial Spring Cloud Gateway timeouts. You can track services availability using Eureka dashboard
-available by default at http://localhost:8761.
+so don't be scared of initial Spring Cloud Gateway timeouts.
 
-The `master` branch uses an  Alpine linux  with JRE 8 as Docker base. You will find a Java 11 version in the `release/java11` branch.
+The `master` branch uses an  Alpine linux  with JRE 8 as Docker base.
 
 *NOTE: Under MacOSX or Windows, make sure that the Docker VM has enough memory to run the microservices. The default settings
-are usually not enough and make the `docker-compose up` painfully slow.*
-
-
-## Starting services locally with docker-compose and Java
-If you experience issues with running the system via docker-compose you can try running the `./scripts/run_all.sh` script that will start the infrastructure services via docker-compose and all the Java based applications via standard `nohup java -jar ...` command. The logs will be available under `${ROOT}/target/nameoftheapp.log`. 
-
-Each of the java based applications is started with the `chaos-monkey` profile in order to interact with Spring Boot Chaos Monkey. You can check out the (README)[scripts/chaos/README.md] for more information about how to use the `./scripts/chaos/call_chaos.sh` helper script to enable assaults.
+are usually not enough and make the `docker-compose -f ./migration/docker-compose/docker-compose.yml up` painfully slow.*
 
 ## Understanding the Spring Petclinic application
 
 [See the presentation of the Spring Petclinic Framework version](http://fr.slideshare.net/AntoineRey/spring-framework-petclinic-sample-application)
-
-[A blog bost introducing the Spring Petclinic Microsevices](http://javaetmoi.com/2018/10/architecture-microservices-avec-spring-cloud/) (french language)
 
 You can then access petclinic here: http://localhost:8080/
 
@@ -53,11 +41,6 @@ You can then access petclinic here: http://localhost:8080/
 **Architecture diagram of the Spring Petclinic Microservices**
 
 ![Spring Petclinic Microservices architecture](docs/microservices-architecture-diagram.jpg)
-
-
-## In case you find a bug/suggested improvement for Spring Petclinic Microservices
-
-Our issue tracker is available here: https://github.com/spring-petclinic/spring-petclinic-microservices/issues
 
 ## Database configuration
 
@@ -70,7 +53,7 @@ Dependency for Connector/J, the MySQL JDBC driver is already included in the `po
 You may start a MySql database with docker:
 
 ```
-docker run -e MYSQL_ROOT_PASSWORD=petclinic -e MYSQL_DATABASE=petclinic -p 3306:3306 mysql:5.7.8
+docker-compose -f docker-compose-mysql up -d
 ```
 or download and install the MySQL database (e.g., MySQL Community Server 5.7 GA), which can be found here: https://dev.mysql.com/downloads/
 
@@ -92,7 +75,7 @@ the host and port of your MySQL JDBC connection string.
 
 ## Custom metrics monitoring
 
-Grafana and Prometheus are included in the `docker-compose.yml` configuration, and the public facing applications
+Grafana and Prometheus are included in the `./migration/docker-compose/docker-compose.yml` configuration, and the public facing applications
 have been instrumented with [MicroMeter](https://micrometer.io) to collect JVM and custom business metrics.
 
 A JMeter load testing script is available to stress the application and generate metrics: [petclinic_test_plan.jmx](spring-petclinic-api-gateway/src/test/jmeter/petclinic_test_plan.jmx)
@@ -129,7 +112,6 @@ All those three REST controllers `OwnerResource`, `PetResource` and `VisitResour
 | Configuration server            | [Config server properties](spring-petclinic-config-server/src/main/resources/application.yml) and [Configuration repository] |
 | API Gateway                     | [Spring Cloud Gateway starter](spring-petclinic-api-gateway/pom.xml) and [Routing configuration](/spring-petclinic-api-gateway/src/main/resources/application.yml) |
 | Docker Compose                  | [Spring Boot with Docker guide](https://spring.io/guides/gs/spring-boot-docker/) and [docker-compose file](experiment/docker compose/docker-compose.yml) |
-| Circuit Breaker                 | [Resilience4j fallback method](spring-petclinic-api-gateway/src/main/java/org/springframework/samples/petclinic/api/boundary/web/ApiGatewayController.java)  |
 | Grafana / Prometheus Monitoring | [Micrometer implementation](https://micrometer.io/), [Spring Boot Actuator Production Ready Metrics] |
 
  Front-end module  | Files |

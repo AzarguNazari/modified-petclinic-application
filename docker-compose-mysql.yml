@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  mysql:
+    image: mysql:5.7.32
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: petclinic
+      MYSQL_DATABASE: petclinic
+    ports:
+      - "3306:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: localhost
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    depends_on:
+      - mysql
+    ports:
+      - "9094:80"
+
+
