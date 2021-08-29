@@ -1,0 +1,66 @@
+version: '2'
+
+services:
+  config-server:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 3
+      response_timeout: 5000
+      port: 8888
+  customers-service:
+    scale: 6
+    start_on_create: true
+    health_check:
+      healthy_threshold: 3
+      response_timeout: 5000
+      port: 8081
+  visits-service:
+    scale: 6
+    start_on_create: true
+    health_check:
+      healthy_threshold: 3
+      response_timeout: 5000
+      port: 8082
+  vets-service:
+    scale: 6
+    start_on_create: true
+    health_check:
+      healthy_threshold: 3
+      response_timeout: 5000
+      port: 8083
+  api-gateway:
+    scale: 2
+    start_on_create: true
+    health_check:
+      port: 8080
+      healthy_threshold: 3
+      response_timeout: 5000
+  tracing-server:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 3
+      response_timeout: 5000
+      port: 9411
+  admin-server:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 3
+      response_timeout: 5000
+      port: 9090
+  grafana-server:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 3
+      response_timeout: 5000
+      port: 3000
+  prometheus-server:
+    scale: 1
+    start_on_create: true
+    health_check:
+      healthy_threshold: 3
+      response_timeout: 5000
+      port: 9090

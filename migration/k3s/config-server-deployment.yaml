@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: config-server
+  labels:
+    app: config-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: config-server
+  template:
+    metadata:
+      labels:
+        app: config-server
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: config-server
+          image: nazariazargul/petclinic-config-server:4.0
+          ports:
+            - containerPort: 8888
+          env:
+            - name: spring.boot.admin.client.url
+              value: admin-server:9091/spring-boot-admin
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: config-server
+spec:
+  selector:
+    app: config-server
+  ports:
+    - protocol: TCP
+      port: 8888
+      targetPort: 8888
+#      nodePort: 30002
