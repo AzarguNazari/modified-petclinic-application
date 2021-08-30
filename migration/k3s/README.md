@@ -4,6 +4,7 @@
 - Ubuntu 20.04
 
 # Installation
+- We used a 3-node cluster using Hetnzer [CX41](https://www.hetzner.com/cloud)
 - Run this command on server node to install k3s server `curl -sfL https://get.k3s.io | sh -`
 - To make server node access `kubetctl` command, run the command `sudo chmod 777 /etc/rancher/k3s/k3s.yaml` on server node.
 - To install Portainer UI for Kubernetes management, use [this](https://documentation.portainer.io/v2.0/deploy/ceinstallk8s/) guide to install 
@@ -19,16 +20,3 @@ playground-hazar-3   Ready    <none>                 87s     v1.21.3+k3s1
 ```
 ![K3s-portainer](https://github.com/AzarguNazari/modifed-petclinic-application/blob/master/media/k3s-portainer.png)
 
-## To install docker swarm cluster:
-We used a 3-node cluster using Hetnzer [CX41](https://www.hetzner.com/cloud)
-```shell
-sh ./cluster-installation/installation.sh
-```
-
-## How to run?
-```shell
-sh ./deploy.sh
-```
-
-**Note**: We used Portainer as management tool for docker swarm.
-![Docker Swarm Portainer](https://github.com/AzarguNazari/modifed-petclinic-application/blob/master/media/docker-swarm-portainer.png?raw=true)
