@@ -8,5 +8,5 @@ iostat 1 300 > cpu.txt
 ```
 - Command to get the RAM utilization 
 ```shell
- sar -r 1 300 -o JSON
+ sar -r 1 300 -o JSON > memory.txt
 ```
