@@ -3,7 +3,6 @@
 
 - Command to get the CPU utlization
 ```shell
-CPU
 iostat 1 300 > cpu.txt
 ```
 - Command to get the RAM utilization 
