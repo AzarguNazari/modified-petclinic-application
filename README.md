@@ -1,4 +1,4 @@
-# Modified version of the [Spring PetClinic Microservice Application](https://github.com/spring-petclinic/spring-petclinic-microservices) built with Spring Cloud
+# Modified version of the [Spring PetClinic Microservice Application](https://github.com/spring-petclinic/spring-petclinic-microservices)
 
 ## Starting services locally without Docker
 For the local development, you can run the `docker-compose-mysql.yml` which is a mysql database that is used by several services.
