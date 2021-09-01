@@ -26,7 +26,7 @@ spec:
             - name: CUSTOMER_SERVICE
               value: customers-service
             - name: spring.boot.admin.client.url
-              value: admin-server:9091/spring-boot-admin
+              value: http://admin-server:9091/spring-boot-admin
             - name: VETS_SERVICE
               value: vets-service
             - name: VISITS_SERVICE
@@ -45,4 +45,4 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: 8080
-#      nodePort: 30001
+  type: LoadBalancer

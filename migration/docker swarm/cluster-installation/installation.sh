@@ -75,11 +75,11 @@ docker_registry_login() {
 
 add_labels() {
    ssh fadmin@playground-hazar-1.fvndo.net 'docker node update --label-add application=true playground-hazar-1'
-   ssh fadmin@playground-hazar-1.fvndo.net 'docker node update --label-add monitoring=true playground-hazar-1'
+   ssh fadmin@playground-hazar-1.fvndo.net 'docker node update --label-add monitoring=true playground-hazar-1 '
    ssh fadmin@playground-hazar-2.fvndo.net 'docker node update --label-add application=true playground-hazar-2'
-   ssh fadmin@playground-hazar-2.fvndo.net 'docker node update --label-add monitoring=true playground-hazar-2'
+   ssh fadmin@playground-hazar-2.fvndo.net 'docker node update --label-add monitoring=true playground-hazar-2 '
    ssh fadmin@playground-hazar-3.fvndo.net 'docker node update --label-add application=true playground-hazar-3'
-   ssh fadmin@playground-hazar-3.fvndo.net 'docker node update --label-add monitoring=true playground-hazar-3'
+   ssh fadmin@playground-hazar-3.fvndo.net 'docker node update --label-add monitoring=true playground-hazar-3 '
 }
 
 create_context(){

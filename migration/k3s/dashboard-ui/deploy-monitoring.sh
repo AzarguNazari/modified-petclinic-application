@@ -6,6 +6,8 @@ sudo k3s kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboar
 
 sudo k3s kubectl create -f dashboard.admin-user.yml -f dashboard.admin-user-role.yml
 
+sudo kubectl port-forward kubernetes-dashboard-67484c44f6-qzcqb 9000:443 -n kubernetes-dashboard
+
 # obtain bear token
 sudo k3s kubectl -n kubernetes-dashboard describe secret admin-user-token | grep '^token'
 

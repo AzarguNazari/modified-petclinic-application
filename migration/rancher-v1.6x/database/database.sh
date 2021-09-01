@@ -1,6 +1,6 @@
 #!/bin/sh
 export RANCHER_URL='http://playground-hazar-1.fvndo.net:8080/v1/projects/1a5'
-export RANCHER_ACCESS_KEY='DD8012BE1F616CC72150'
-export RANCHER_SECRET_KEY='JEoW3sg7hed8fBx59Aiir7np7jNY8KBuT1s675rB'
+export RANCHER_ACCESS_KEY='68F30E71831D3D24CF55'
+export RANCHER_SECRET_KEY='YgzC1irKbZBEFy9hdGMQLk3bvR9Neqy6tFYVryxW'
 
 ../rancher  -w --wait-state healthy up --prune --upgrade --stack database -d  --confirm-upgrade

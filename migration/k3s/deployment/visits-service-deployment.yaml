@@ -24,7 +24,7 @@ spec:
             - name: CONFIG_SERVER
               value: config-server
             - name: MYSQL_HOST
-              value: mysql
+              value: mysql-service
             - name: spring.boot.admin.client.url
               value: admin-server:9091/spring-boot-admin
             - name: SPRING_ZIPKIN_BASEURL
@@ -41,5 +41,5 @@ spec:
     - protocol: TCP
       port: 8082
       targetPort: 8082
-
+  type: LoadBalancer
 

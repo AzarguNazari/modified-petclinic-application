@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: phpmyadmin
-          image: phpmyadmin/phpmyadmin
+          image: nazariazargul/phpmyadmin:1.0
           ports:
             - containerPort: 80
           env:
@@ -30,7 +30,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: phpmyadmin
+  name: phpmyadmin-service
 spec:
   selector:
     app: phpmyadmin
@@ -38,4 +38,5 @@ spec:
     - protocol: TCP
       port: 9094
       targetPort: 80
-#      nodePort: 30006
+      nodePort: 30005
+  type: LoadBalancer

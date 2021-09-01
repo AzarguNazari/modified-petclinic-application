@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: petclinic-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+    - host: playground-hazar-2.fvndo.net
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: api-gateway
+              servicePort: 8080
