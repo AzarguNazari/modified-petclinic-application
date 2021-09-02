@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin-server
+spec:
+  selector:
+    matchLabels:
+      app: admin-server
+  template:
+    metadata:
+      labels:
+        app: admin-server
+    spec:
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 5
+      containers:
+        - name: admin-server
+          image: nazariazargul/petclinic-admin-server:4.0
+          ports:
+            - containerPort: 9090
+          env:
+            - name: CONFIG_SERVER
+              value: config-server
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: admin-server
+spec:
+  type: LoadBalancer
+  selector:
+    app: admin-server
+  ports:
+    - name: tcp
+      port: 9091
+      targetPort: 9090

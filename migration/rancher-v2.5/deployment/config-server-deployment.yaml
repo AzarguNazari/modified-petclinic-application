@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: configserver
+spec:
+  selector:
+    matchLabels:
+      app: configserver
+  template:
+    metadata:
+      labels:
+        app: configserver
+    spec:
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 5
+      containers:
+        - name: configserver
+          image: nazariazargul/petclinic-config-server:4.0
+          ports:
+            - containerPort: 8888
+          env:
+            - name: spring.boot.admin.client.url
+              value: admin-server:9091/spring-boot-admin
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: config-server
+spec:
+  type: ClusterIP
+  selector:
+    app: configserver
+  ports:
+    - name: tcp
+      port: 8888
+      targetPort: 8888
+
