@@ -14,12 +14,13 @@
 - As the Rancher v2.5 platform gets ready, users can add server and client:
 ![add cluster](https://github.com/AzarguNazari/modified-petclinic-application/blob/master/media/rancher-2.5-creating-cluster.png?raw=true) 
 - For RKE server which also includes the etc, the generated command looks like:
-```shell
-sudo docker run -d --privileged --restart=unless-stopped --net=host -v /etc/kubernetes:/etc/kubernetes -v /var/run:/var/run  rancher/rancher-agent:v2.5-47e2c3e7324fb74c643ec877db0272ab500b5097-head --server https://playground-hazar-1.fvndo.net --token vgk6qmvcvw6j6bgxmjhts5xtv6klqwcq4gvrn66gnj5s2ww8zvbwvn --ca-checksum 60e2fd5c4328b375dcb04348cd510568963df91bc9dc507cb784589fa0b99710 --etcd --controlplane --worker```
+`
+sudo docker run -d --privileged --restart=unless-stopped --net=host -v /etc/kubernetes:/etc/kubernetes -v /var/run:/var/run  rancher/rancher-agent:v2.5-47e2c3e7324fb74c643ec877db0272ab500b5097-head --server https://playground-hazar-1.fvndo.net --token vgk6qmvcvw6j6bgxmjhts5xtv6klqwcq4gvrn66gnj5s2ww8zvbwvn --ca-checksum 60e2fd5c4328b375dcb04348cd510568963df91bc9dc507cb784589fa0b99710 --etcd --controlplane --worker
+`
 - For RKE worker nodes, the generated command would be like this:
-```shell
+`
 sudo docker run -d --privileged --restart=unless-stopped --net=host -v /etc/kubernetes:/etc/kubernetes -v /var/run:/var/run  rancher/rancher-agent:v2.5-47e2c3e7324fb74c643ec877db0272ab500b5097-head --server https://playground-hazar-1.fvndo.net --token vgk6qmvcvw6j6bgxmjhts5xtv6klqwcq4gvrn66gnj5s2ww8zvbwvn --ca-checksum 60e2fd5c4328b375dcb04348cd510568963df91bc9dc507cb784589fa0b99710 --worker
-```
+`
 - Paste the generated commands for server on node-2, and for worker node on node-3.
 - The ready cluster would look lie:
 ![K3s-portainer](https://github.com/AzarguNazari/modified-petclinic-application/blob/master/media/ready-cluster.png?raw=true)
