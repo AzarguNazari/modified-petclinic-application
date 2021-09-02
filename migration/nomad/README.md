@@ -9,5 +9,4 @@
 ## Installation:
 - The `./nomad-installation` directory  provides installation script for nomad cluster.
 - To installation nomad, run the script `sh ./nomad-installation/installation.sh`
-
-# To deploy the petclinic application ,use the `./deployment/petclinic.nomad` file.
+- To deploy the petclinic application, use the `./deployment/petclinic.nomad`.
